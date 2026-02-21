@@ -68,7 +68,8 @@ export default function App() {
   const restoredAudioUrlRef = useRef('')
 
   useEffect(() => {
-    fetch('/dictionary.json')
+    const base = import.meta.env.BASE_URL
+    fetch(`${base}dictionary.json`)
       .then((r) => r.ok ? r.json() : {})
       .then(setDictionary)
       .catch(() => setDictionary({}))
