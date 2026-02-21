@@ -12,7 +12,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'vite.svg'],
+      includeAssets: ['favicon.svg', 'icon.svg'],
       manifest: {
         name: 'Podcast',
         short_name: 'Podcast',
@@ -24,13 +24,13 @@ export default defineConfig({
         scope: base,
         icons: [
           {
-            src: '/vite.svg',
+            src: `${base}icon.svg`,
             sizes: '192x192',
             type: 'image/svg+xml',
             purpose: 'any'
           },
           {
-            src: '/vite.svg',
+            src: `${base}icon.svg`,
             sizes: '512x512',
             type: 'image/svg+xml',
             purpose: 'any maskable'
