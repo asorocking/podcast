@@ -154,9 +154,8 @@ export default function App() {
     setTooltip({ word, translation })
   }, [])
 
-  const handleCloseTooltipAndResume = useCallback(() => {
+  const handleCloseTooltip = useCallback(() => {
     setTooltip(null)
-    setIsPlaying(true)
   }, [])
 
   const handleInitialSeekDone = useCallback(() => {
@@ -200,8 +199,8 @@ export default function App() {
           initialScrollTop={scrollPosition}
           autoScrollEnabled={autoScroll && initialSeekTime == null}
           onWordClick={handleWordClick}
-          onCloseTooltip={() => setTooltip(null)}
-          onCloseTooltipAndResume={handleCloseTooltipAndResume}
+          onCloseTooltip={handleCloseTooltip}
+          onCloseTooltipAndResume={handleCloseTooltip}
           onScrollPositionChange={setScrollPosition}
         />
       </main>

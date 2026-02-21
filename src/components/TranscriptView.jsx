@@ -129,18 +129,21 @@ export default function TranscriptView({
               {tokens.map((t, i) => {
                 const translation = getTranslation(t.word)
                 const isWord = /^[\w'-]+$/i.test(t.word)
+                const nextIsWord = i + 1 < tokens.length && /^[\w'-]+$/i.test(tokens[i + 1].word)
                 const key = `${idx}-${i}-${t.start}`
                 if (isWord) {
                   return (
-                    <span
-                      key={key}
-                      className={`word ${translation ? 'word--translatable' : ''} ${hoverWord === key ? 'word--hover' : ''}`}
-                      onClick={() => handleWordClick(t.word)}
-                      onMouseEnter={() => setHoverWord(key)}
-                      onMouseLeave={() => setHoverWord(null)}
-                      title={translation ? translation : undefined}
-                    >
-                      {t.word}
+                    <span key={key}>
+                      <span
+                        className={`word ${translation ? 'word--translatable' : ''} ${hoverWord === key ? 'word--hover' : ''}`}
+                        onClick={() => handleWordClick(t.word)}
+                        onMouseEnter={() => setHoverWord(key)}
+                        onMouseLeave={() => setHoverWord(null)}
+                        title={translation ? translation : undefined}
+                      >
+                        {t.word}
+                      </span>
+                      {nextIsWord ? ' ' : null}
                     </span>
                   )
                 }

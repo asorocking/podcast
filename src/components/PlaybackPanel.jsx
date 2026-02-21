@@ -126,29 +126,31 @@ export default function PlaybackPanel({
         onEnded={handleEnded}
       />
       <div className="playback-panel">
-        <div className="playback-info">
-          <div className="playback-meta">
-            <div className="playback-times">
-              <span>{formatTime(currentTime)}</span>
-              <div
-                ref={progressRef}
-                className="progress-bar"
-                onClick={handleProgressClick}
-                role="progressbar"
-                aria-valuenow={currentTime}
-                aria-valuemin={0}
-                aria-valuemax={duration}
-              >
-                <div className="progress-fill" style={{ width: `${progress}%` }} />
-              </div>
-              <span className="remaining">−{formatTime(remaining)}</span>
-            </div>
-            <div className="playback-title">{title || 'Подкаст'}</div>
-            <div className="playback-subtitle">{subtitle || ''}</div>
+        <div className="playback-progress-section">
+          <div className="playback-times-row">
+            <span className="playback-time-current">{formatTime(currentTime)}</span>
+            <span className="playback-time-remaining">−{formatTime(remaining)}</span>
+          </div>
+          <div
+            ref={progressRef}
+            className="progress-bar"
+            onClick={handleProgressClick}
+            role="progressbar"
+            aria-valuenow={currentTime}
+            aria-valuemin={0}
+            aria-valuemax={duration}
+          >
+            <div className="progress-fill" style={{ width: `${progress}%` }} />
           </div>
         </div>
-
-        <div className="playback-right">
+        <div className="playback-bottom">
+          <div className="playback-info">
+            <div className="playback-meta">
+              <div className="playback-title">{title || 'Подкаст'}</div>
+              <div className="playback-subtitle">{subtitle || ''}</div>
+            </div>
+          </div>
+          <div className="playback-right">
           <div className="playback-controls" ref={speedMenuRef}>
             <div className="speed-dropdown">
               <button
@@ -212,6 +214,7 @@ export default function PlaybackPanel({
           <button type="button" className="icon-btn" title="Плейлист">
             <span className="icon-list">≡</span>
           </button>
+          </div>
         </div>
       </div>
     </>
