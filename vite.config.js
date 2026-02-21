@@ -14,6 +14,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'icon.svg'],
       manifest: {
+        id: 'https://asorocking.github.io/podcast/',
         name: 'Podcast',
         short_name: 'Podcast',
         description: 'Podcast PWA: воспроизведение подкастов с текстом и переводом слов',
