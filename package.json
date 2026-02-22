@@ -8,7 +8,10 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "build:gh": "GITHUB_PAGES=true vite build"
+    "build:gh": "GITHUB_PAGES=true vite build",
+    "dict:update": "node scripts/apply-dictionary-updates.mjs",
+    "dict:translate": "node scripts/translate-dictionary.mjs",
+    "dict:translate-quick": "node scripts/translate-dictionary.mjs --quick"
   },
   "dependencies": {
     "react": "^19.2.0",
@@ -19,6 +22,7 @@
     "@eslint/js": "^9.39.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "@vitalets/google-translate-api": "^9.2.1",
     "@vitejs/plugin-react": "^5.1.1",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",

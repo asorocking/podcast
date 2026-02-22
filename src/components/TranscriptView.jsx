@@ -1,4 +1,5 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
+import { formatTranslation, dictionaryValueToArray } from '../utils/translate'
 
 function splitSentences(text) {
   if (!text?.trim()) return []
@@ -92,16 +93,16 @@ export default function TranscriptView({
     return () => document.removeEventListener('mousedown', handleClick)
   }, [tooltip, onCloseTooltipAndResume])
 
-  const getTranslation = (word) => {
-    if (!dictionary || !word) return null
+  const getTranslationDisplay = (word) => {
+    if (!dictionary || !word) return ''
     const key = word.replace(/^['"]|['"]$/g, '').toLowerCase()
-    return dictionary[key] ?? null
+    const value = dictionary[key]
+    return formatTranslation(value)
   }
 
   const handleWordClick = (word) => {
     const key = word.replace(/^['"]|['"]$/g, '').toLowerCase()
-    const translation = dictionary?.[key] ?? null
-    onWordClick?.(key, translation)
+    onWordClick?.(key)
   }
 
   if (!transcript?.trim()) {
@@ -127,7 +128,7 @@ export default function TranscriptView({
               className={`transcript-sentence ${isActive ? 'transcript-sentence--active' : ''}`}
             >
               {tokens.map((t, i) => {
-                const translation = getTranslation(t.word)
+                const translationStr = getTranslationDisplay(t.word)
                 const isWord = /^[\w'-]+$/i.test(t.word)
                 const nextIsWord = i + 1 < tokens.length && /^[\w'-]+$/i.test(tokens[i + 1].word)
                 const key = `${idx}-${i}-${t.start}`
@@ -135,11 +136,11 @@ export default function TranscriptView({
                   return (
                     <span key={key}>
                       <span
-                        className={`word ${translation ? 'word--translatable' : ''} ${hoverWord === key ? 'word--hover' : ''}`}
+                        className={`word ${translationStr ? 'word--translatable' : ''} ${hoverWord === key ? 'word--hover' : ''}`}
                         onClick={() => handleWordClick(t.word)}
                         onMouseEnter={() => setHoverWord(key)}
                         onMouseLeave={() => setHoverWord(null)}
-                        title={translation ? translation : undefined}
+                        title={translationStr || undefined}
                       >
                         {t.word}
                       </span>
@@ -163,7 +164,13 @@ export default function TranscriptView({
         >
           <strong>{tooltip.word}</strong>
           <span className="translation-value">
-            {tooltip.translation && tooltip.translation !== '—' ? tooltip.translation : '— нет в словаре'}
+            {tooltip.translation === null
+              ? 'Загрузка…'
+              : Array.isArray(tooltip.translation)
+                ? (formatTranslation(tooltip.translation) || '— нет в словаре')
+                : tooltip.translation
+                  ? String(tooltip.translation)
+                  : '— нет в словаре'}
           </span>
           <button type="button" className="tooltip-close" onClick={onCloseTooltip}>
             ×

@@ -4,6 +4,7 @@ import PlaybackPanel from './components/PlaybackPanel'
 import TranscriptView from './components/TranscriptView'
 import Settings from './components/Settings'
 import { saveAudio, loadAudio } from './utils/audioStorage'
+import { getTranslations, dictionaryValueToArray } from './utils/translate'
 import './App.css'
 
 const STORAGE_KEY = 'podcast-app-state'
@@ -150,10 +151,19 @@ export default function App() {
     setIsPlaying(nextPlaying)
   }, [])
 
-  const handleWordClick = useCallback((word, translation) => {
+  const handleWordClick = useCallback((word) => {
     setIsPlaying(false)
-    setTooltip({ word, translation })
-  }, [])
+    const key = word.replace(/^['"]|['"]$/g, '').toLowerCase().trim()
+    setTooltip({ word: key, translation: null })
+    getTranslations(word, dictionary ?? {})
+      .then((variants) => {
+        setTooltip((prev) => (prev && prev.word === key ? { ...prev, translation: variants } : prev))
+      })
+      .catch(() => {
+        const fromDict = dictionaryValueToArray(dictionary?.[key])
+        setTooltip((prev) => (prev && prev.word === key ? { ...prev, translation: fromDict.length ? fromDict : null } : prev))
+      })
+  }, [dictionary])
 
   const handleCloseTooltip = useCallback(() => {
     setTooltip(null)
